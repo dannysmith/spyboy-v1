@@ -19,3 +19,9 @@ To set up:
   heroku open
 
 6. Start Work!
+
+# To work
+
+    rvm use 1.9.3
+    rvm gemset use spyboy
+    bundle install
