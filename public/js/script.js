@@ -14,10 +14,11 @@ $(function(){
 						type: 'DELETE',
 						async: false,
 						complete: function(response, status) {
+							alert(status);
 							if (status == 'success') {
 								location.reload();
 							} else {
-								alert('Error: ' + status + 'the service responded with: ' + response.status + '\n' + response.responseText);
+								alert('Error: the service responded with: ' + response.status + '\n' + response.responseText);
 							}
 						}
 					}

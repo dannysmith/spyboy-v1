@@ -136,7 +136,7 @@ class SpyBoy < Sinatra::Base
   delete "/link/:id" do
     @link = Link.get(params[:id])
     if @link.destroy
-      redirect "/dashboard"
+      status 200
     else
       status 404
       "Link could not be found"
@@ -197,7 +197,7 @@ class SpyBoy < Sinatra::Base
   delete "/show/:id" do
     @show = Show.get(params[:id])
     if @show.destroy
-      redirect "/dashboard"
+      status 200
     else
       status 404
       "Link could not be found"
@@ -239,7 +239,7 @@ class SpyBoy < Sinatra::Base
   delete "/email/:id" do
     @email = Email.get(params[:id])
      if @email.destroy
-       redirect "/dashboard"
+       status 200
      else
        status 404
        "Email Address could not be found"
