@@ -17,7 +17,7 @@ $(function(){
 							if (status == 'success') {
 								location.reload();
 							} else {
-								alert('Error: the service responded with: ' + response.status + '\n' + response.responseText);
+								alert('Error: ' + status + 'the service responded with: ' + response.status + '\n' + response.responseText);
 							}
 						}
 					}
