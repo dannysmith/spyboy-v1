@@ -1,0 +1,38 @@
+<section>
+  <h1>Links</h1>
+  <form action="link" method="post" accept-charset="utf-8">
+    <input name="title" value="" placeholder="Title">
+    <input name="url" value="" placeholder="http://">
+    <input name="description" value="" placeholder="description">
+    <input type="submit" name="submit" value="Submit">
+  </form>
+  <ul>
+    <% if @links == nil %>
+      <p>There are no links yet</p>
+    <% else %>
+      <% @links.each do |l| %>
+        <li>
+          <a href="<%= l.url %>" title="<%= l.description %>"><%= l.title %></a>
+          (<a href="/link/<%= l.id %>" class="delete">x</a> | 
+           <a href="/link/<%= l.id %>/edit" data-fancybox-type="iframe" class="fancybox">e</a>)
+        </li>
+      <% end %>
+    <% end %>
+  </ul>
+</section>
+
+<section>
+  <h1>Email Addresses</h1>
+  <ul>
+    <% if @emails == nil %>
+      <p>There are no email addresses signed up yet</p>
+    <% else %>
+      <% @emails.each do |e| %>
+        <li>
+          <a href="mailto:<%= e.address %>"><%= e.address %></a>
+          (<a href="/email/<%= e.id %>" class="delete">x</a>)
+        </li>
+      <% end %>
+    <% end %>
+  </ul>
+</section>

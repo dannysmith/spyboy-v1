@@ -1,0 +1,7 @@
+<form action="/link/<%= @link.id %>" method="post" accept-charset="utf-8">
+  <input name="title" value="<%= @link.title %>" placeholder="Title">
+  <input name="url" value="<%= @link.url %>" placeholder="http://">
+  <input name="description" value="<%= @link.description %>" placeholder="description">
+  <input type="hidden" name="_method" value="put">
+  <input type="submit" name="submit" value="Submit">
+</form>
