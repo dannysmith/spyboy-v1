@@ -14,7 +14,7 @@ $(function(){
 						type: 'DELETE',
 						async: false,
 						complete: function(response, status) {
-							alert(status);
+							//alert(status);
 							if (status == 'success') {
 								location.reload();
 							} else {
