@@ -1,0 +1,9 @@
+<form action="/show/<%= @show.id %>" method="post" accept-charset="utf-8">
+  <input name="title" value="<%= @show.title %>" placeholder="Title">*
+  <input name="venue" value="<%= @show.venue %>" placeholder="Venue name">*
+  <input name="venue_url" value="<%= @show.venue_url %>" placeholder="Venue URL">
+  <textarea name="description" placeholder="description"><%= @show.description %></textarea>
+  <input type="text" id="datetimefield" value="<%= @show.date_and_time %>" name="date_and_time">
+  <input type="hidden" name="_method" value="put">
+  <input type="submit" name="submit" value="Update Show Details">
+</form>

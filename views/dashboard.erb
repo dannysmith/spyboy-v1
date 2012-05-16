@@ -14,7 +14,7 @@
         <li>
           <a href="<%= l.url %>" title="<%= l.description %>"><%= l.title %></a>
           (<a href="/link/<%= l.id %>" class="delete">x</a> | 
-           <a href="/link/<%= l.id %>/edit" data-fancybox-type="iframe" class="fancybox">e</a>)
+           <a href="/link/<%= l.id %>/edit" data-fancybox-type="iframe" class="fancybox-small">e</a>)
         </li>
       <% end %>
     <% end %>
@@ -31,6 +31,27 @@
         <li>
           <a href="mailto:<%= e.address %>"><%= e.address %></a>
           (<a href="/email/<%= e.id %>" class="delete">x</a>)
+        </li>
+      <% end %>
+    <% end %>
+  </ul>
+</section>
+
+<section>
+  <h1>Shows</h1>
+  <p>
+    <a href="/show/add" data-fancybox-type="iframe" class="fancybox-large">Add a New Show</a>
+  </p>
+  <ul>
+    <% if @shows == nil %>
+      <p>There are no shows yet</p>
+    <% else %>
+      <% @shows.each do |s| %>
+        <li>
+          <a href="/<%= s.slug %>" target="_blank"><%= s.title %></a>
+          <p><%= s.date_to_s %> at <%= s.time_to_s%></p>
+          <a href="/show/<%= s.id %>" class="delete">delete</a> 
+          <a href="/show/<%= s.id %>/edit" data-fancybox-type="iframe" class="fancybox-large">edit</a>
         </li>
       <% end %>
     <% end %>

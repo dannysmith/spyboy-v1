@@ -3,6 +3,7 @@ require "bundler/setup"
 require "sinatra/base"
 require 'rubygems'
 require 'data_mapper'
+require 'carrierwave/datamapper'
 
 #Set up Datamapper connection to Postgres (on heroku) or Sqlite on localhost.
 DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/development.db")
@@ -34,9 +35,18 @@ class Show
   property :title,          String,    :required => true
   property :venue,          String,    :required => true
   property :venue_url,      String
-  property :date_and_time,  DateTime,    :required => true
+  property :slug,           String
+  property :date_and_time,  DateTime,  :required => true
   property :description,    Text
   property :created_at,     DateTime
+  
+  def date_to_s
+    self.date_and_time.strftime('%a %d %b %Y')
+  end
+  
+  def time_to_s
+    self.date_and_time.strftime('%l:%M %p')
+  end
 end
 
 DataMapper.finalize
@@ -78,8 +88,15 @@ class SpyBoy < Sinatra::Base
   get "/dashboard" do
     @links = Link.all
     @emails = Email.all
+    @shows = Show.all
     erb :dashboard
   end
+
+
+
+
+
+
 
   ## Links -----------------
 
@@ -126,23 +143,81 @@ class SpyBoy < Sinatra::Base
     end
   end
 
+
+
+
+
+
+
+
   ## Shows -----------------
 
   post "/show" do
-    "Create new Show. Post data must contain show data"
+    params[:created_at] = Time.now
+    params.delete("submit")
+    @show = Show.new(params)
+    
+    if @show.save
+      str = @show.title
+      str = str.gsub(/[^a-zA-Z0-9 ]/,"")
+      str = str.gsub(/[ ]+/," ")
+      str = str.gsub(/ /,"-")
+      str += "-" + @show.id.to_s
+      str = str.downcase
+      @show.slug = str
+      @show.save
+      erb :_done, layout: :modal_layout
+    else
+      status 500
+      "An Error Occured. The Show couldn't save."
+    end
   end
 
-  put "/show/:id" do
-    "Edit a show. Post data must contain link data and show_id"
+  post "/show/:id" do
+    @show = Show.get(params[:id])
+    str = params[:title]
+    str = str.gsub(/[^a-zA-Z0-9 ]/,"")
+    str = str.gsub(/[ ]+/," ")
+    str = str.gsub(/ /,"-")
+    str += "-" + params[:id].to_s
+    str = str.downcase
+    params[:slug] = str
+    puts "Updating Show ID #{@show.id} - #{params.to_s}"
+    
+    ["_method", "submit", "splat", "captures"].each { |k| params.delete(k) }
+        
+    if @show.update(params)
+      erb :_done, layout: :modal_layout
+    else
+      status 500
+      "An Error Occured. The Show couldn't be updated."
+    end
   end
 
   delete "/show/:id" do
-    "Remove link. Post data must contain show_id"
+    @show = Show.get(params[:id])
+    if @show.destroy
+      redirect "/dashboard"
+    else
+      status 404
+      "Link could not be found"
+    end
+  end
+  
+  get "/show/add" do
+    erb :_add_show, layout: :modal_layout
+  end
+  
+  get "/show/:id/edit" do
+    @show = Show.get(params[:id])
+    erb :_edit_show, layout: :modal_layout
   end
 
-  get "/show/:id/edit" do
-    "Show Edit form for show"
-  end
+
+
+
+
+
 
   ## Email Addresses -----------------
 
@@ -171,15 +246,17 @@ class SpyBoy < Sinatra::Base
      end
   end
 
-  get "/email" do
+  get "/email.csv" do
+    content_type 'text/plain', charset: 'utf-8'
     @emails = ""
     Email.all.each do |email|
       @emails += email.address + ", "
     end
     return @emails
   end
-end
-
-get "/:show_slug" do
-  "Show Page for show."
+  
+  get "/:show_slug" do
+    @show = Show.first(slug: params[:show_slug])
+    erb :view_show
+  end
 end

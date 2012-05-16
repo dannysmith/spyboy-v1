@@ -1,7 +1,14 @@
 <html>
 <head>
+  <meta charset="utf-8">
   <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/anytime.c.css">
+  
   <style type="text/css" media="screen">
+  
+    body {
+      background: #fff;
+    }
     .done-box a {
       display: block;
       color: black;
@@ -29,4 +36,17 @@
 </head>
 <body>
   <%= yield %>
+  
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="/js/libs/jquery-1.7.2.min.js"><\/script>');</script>
+  <script src="/js/anytime.js"></script>
+  <script>
+    AnyTime.picker("datetimefield",
+        { format: "%Y-%m-%dT%H:%i:%s%+",
+          formatUtcOffset: "%: (%@)",
+          hideInput: true,
+          askSecond: false,
+          placement: "inline" });
+  </script>
+  
 </body>
