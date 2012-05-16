@@ -1,7 +1,9 @@
-<form action="/show" method="post" accept-charset="utf-8">
+<form action="/show" method="post" enctype="multipart/form-data">
   <input name="title" value="" placeholder="Title">*
   <input name="venue" value="" placeholder="Venue name">*
   <input name="venue_url" value="" placeholder="Venue URL">
+  <input type="file" name="image1">
+  <input type="file" name="image2">
   <textarea name="description" placeholder="description"></textarea>
   <input type="text" id="datetimefield" name="date_and_time">
   <input type="submit" name="submit" value="Create Show">

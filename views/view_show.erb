@@ -4,9 +4,9 @@
     <h2><%= @show.date_to_s%></h2>
     <p><%= @show.time_to_s%></p>
     <p>
-      <%= "<a href='#{@show.venue_url}'>" unless @show.venue_url.empty? %>
+      <%= "<a href='#{@show.venue_url}'>" unless @show.venue_url.nil? || @show.venue_url.empty? %>
         <%= @show.venue %>
-      <%= "</a>" unless @show.venue_url.empty? %>
+      <%= "</a>" unless @show.venue_url.nil? || @show.venue_url.empty? %>
   </header>
   <%= @show.description %>
 </article>

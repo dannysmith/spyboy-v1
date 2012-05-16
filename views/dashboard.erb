@@ -48,6 +48,7 @@
     <% else %>
       <% @shows.each do |s| %>
         <li>
+          <img src="<%= s.image1.thumb.url %>" alt="Image" />
           <a href="/<%= s.slug %>" target="_blank"><%= s.title %></a>
           <p><%= s.date_to_s %> at <%= s.time_to_s%></p>
           <a href="/show/<%= s.id %>" class="delete">delete</a> 

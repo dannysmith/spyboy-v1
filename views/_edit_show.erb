@@ -1,7 +1,11 @@
-<form action="/show/<%= @show.id %>" method="post" accept-charset="utf-8">
+<form action="/show/<%= @show.id %>" method="post" enctype="multipart/form-data">
   <input name="title" value="<%= @show.title %>" placeholder="Title">*
   <input name="venue" value="<%= @show.venue %>" placeholder="Venue name">*
   <input name="venue_url" value="<%= @show.venue_url %>" placeholder="Venue URL">
+  <img src="<%= @show.image1.thumb.url %>" alt="Show Image" />
+  <input type="file" name="image1">
+  <img src="<%= @show.image2.thumb.url %>" alt="Show Image" />
+  <input type="file" name="image2">
   <textarea name="description" placeholder="description"><%= @show.description %></textarea>
   <input type="text" id="datetimefield" value="<%= @show.date_and_time %>" name="date_and_time">
   <input type="hidden" name="_method" value="put">
