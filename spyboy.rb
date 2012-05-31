@@ -11,8 +11,9 @@ require 'tzinfo'
 
 ####################### CARRIERWAVE SETUP ##########################
 
+puts 
 CarrierWave.configure do |config|
-  if RACK_ENV == "production"
+  if ENV["RACK_ENV"] == "production"
     #Set up Carrierwave - Production
     config.fog_credentials = {
       :provider               => 'AWS',       # required
@@ -31,7 +32,7 @@ end
 class ShowImageUploader < CarrierWave::Uploader::Base
   include CarrierWave::MiniMagick
   
-  if RACK_ENV == "production"
+  if ENV["RACK_ENV"] == "production"
     storage :fog
   end
   
