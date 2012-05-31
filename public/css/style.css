@@ -1,147 +1,560 @@
-/* =============================================================================
-   Adapted HTML5 Boilerplate CSS: h5bp.com/css
-   ========================================================================== */
-
-article, aside, details, figcaption, figure, footer, header, hgroup, nav, section { display: block; }
-audio, canvas, video { display: inline-block; *display: inline; *zoom: 1; }
-audio:not([controls]) { display: none; }
-[hidden] { display: none; }
-
-html { font-size: 100%; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
-html, button, input, select, textarea { font-family: sans-serif; color: #222; }
-body { margin: 0; font-size: 1em; line-height: 1.4; }
-
-a:focus { outline: thin dotted; }
-a:hover, a:active { outline: 0; }
-
-abbr[title] { border-bottom: 1px dotted; }
-b, strong { font-weight: bold; }
-blockquote { margin: 1em 40px; }
-dfn { font-style: italic; }
-hr { display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0; }
-ins { background: #ff9; color: #000; text-decoration: none; }
-mark { background: #ff0; color: #000; font-style: italic; font-weight: bold; }
-pre, code, kbd, samp { font-family: monospace, serif; _font-family: 'courier new', monospace; font-size: 1em; }
-pre { white-space: pre; white-space: pre-wrap; word-wrap: break-word; }
-q { quotes: none; }
-q:before, q:after { content: ""; content: none; }
-small { font-size: 85%; }
-
-sub, sup { font-size: 75%; line-height: 0; position: relative; vertical-align: baseline; }
-sup { top: -0.5em; }
-sub { bottom: -0.25em; }
-
-ul, ol { margin: 1em 0; padding: 0 0 0 40px; }
-dd { margin: 0 0 0 40px; }
-nav ul, nav ol { list-style: none; list-style-image: none; margin: 0; padding: 0; }
-
-img { border: 0; -ms-interpolation-mode: bicubic; vertical-align: middle; }
-
-svg:not(:root) { overflow: hidden; }
-
-figure { margin: 0; }
-
-form { margin: 0; }
-fieldset { border: 0; margin: 0; padding: 0; }
-label { cursor: pointer; }
-legend { border: 0; *margin-left: -7px; padding: 0; white-space: normal; }
-button, input, select, textarea { font-size: 100%; margin: 0; vertical-align: baseline; *vertical-align: middle; }
-button, input { line-height: normal; }
-button, input[type="button"], input[type="reset"], input[type="submit"] { cursor: pointer; -webkit-appearance: button; *overflow: visible; }
-button[disabled], input[disabled] { cursor: default; }
-input[type="checkbox"], input[type="radio"] { box-sizing: border-box; padding: 0; *width: 13px; *height: 13px; }
-input[type="search"] { -webkit-appearance: textfield; -moz-box-sizing: content-box; -webkit-box-sizing: content-box; box-sizing: content-box; }
-input[type="search"]::-webkit-search-decoration, input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; }
-button::-moz-focus-inner, input::-moz-focus-inner { border: 0; padding: 0; }
-textarea { overflow: auto; vertical-align: top; resize: vertical; }
-input:valid, textarea:valid {  }
-input:invalid, textarea:invalid { background-color: #f0dddd; }
-
-table { border-collapse: collapse; border-spacing: 0; }
-td { vertical-align: top; }
-
-.chromeframe { margin: 0.2em 0; background: #ccc; color: black; padding: 0.2em 0; }
-
-
 /* ===== Initializr Styles ===
    =========================== */
 
-body{
-	font:16px/26px Helvetica, Helvetica Neue, Arial;
-	background: #F3EDD4 url(../img/bg2.png) repeat; /* F3EDD4 */
+body {
+	font:12px/1.61803399 Helvetica, Helvetica Neue, Arial;
+	background: #9fbdcf; /* #F3EDD4; */
+	
 }
 
-::-moz-selection { background: #fe57a1; color: #fff; text-shadow: none; }
-::selection { background: #fe57a1; color: #fff; text-shadow: none; }
-
-a { color: #759acb; text-decoration: none;}
-a:visited { color: #cca775; }
-a:hover { color: #3B669E; text-decoration: underline;}
 
 #wrapper {
-	width: 80%;
-	margin: 1em auto 1em auto;
-	background: rgba(255,255,255,0.9);
+	max-width: 1000px; /* Old: 841px; */
+	margin: 0 auto 1em auto;
+	background: rgba(255,255,255,0.5);
 	border: 1px solid rgba(0,0,0,0.4);
-	padding: 1em;
+	padding: 0;
+}
+
+#content {
+	padding: 0 20px;
+}
+h1 {
+	font-family: "Museo Slab", "museo-slab", serif;
+	font-weight: 500;
+}
+
+/* =======
+    HEADER
+   ======= */
+header[role="banner"]:after, header[role="banner"]:before {
+	position: absolute;
+  display: block;
+	content: "";
+	width: 0; 
+	height: 0; 
+	border-top: 20px solid #ba672f; 
+	border-left: 20px solid transparent;
+	top: 200px;
+	left: 0px;
+	z-index: 0;
+}
+
+header[role="banner"]:before {
+	border-right: 20px solid transparent;
+	border-left: none;
+	right: 0px;
+	left: inherit;
+	
+}
+	
+header[role="banner"] {
+	position: relative;
+	max-width: 1040px;
+	text-align: center;
+	margin: 0 auto;
+	background: #000 url(../img/header3.png) no-repeat bottom left;
+	height: 200px;
+  -webkit-box-shadow: 0px 5px 9px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow:    0px 5px 9px rgba(0, 0, 0, 0.3);
+	box-shadow:         0px 5px 9px rgba(0, 0, 0, 0.3);
+	z-index: 1;
+}
+	
+header[role="banner"] a 			{text-decoration: none; color: inherit;}
+header[role="banner"] a:hover {text-decoration: none; color: inherit;}
+
+header[role="banner"] h1 {
+	margin: 0;
+  font-size: 4em;
+  font-family: "Sprint";
+  color: #ba672f;
+  text-shadow:  0px 1px 4px #4e2b14,
+  							0px -1px 2px #8b442c;
+}
+
+
+
+
+header[role="banner"] h2 {
+  margin-top: -15px;
+  font-size: 2em;
+  font-family: "Museo Slab";
+  color: #ba672f;
+
+  text-shadow:  0px 1px 1px #4e2b14,
+  							0px -1px 1px #8b442c);
+}
+
+header[role="banner"] p {
+	display: none;
+	padding: 3px;
+	margin: 0 20px;
+	background: rgba(50,50,50,0.7);
+	color: #eee;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	color: #eee;
+	max-width: 680px;
+}
+header[role="banner"] strong {
+	color: #90afc3;
+}
+
+
+header[role="banner"] p.description {
+	display: block;
+	font-size: 1.2em;
+}
+
+/* ALTERNATE HEADER */
+header[role="banner"].alternate {
+	background: #000 url(../img/header-alternate.png) no-repeat bottom left;
 }
 
 /* ================
-    MOBILE: Header
+    FLASH MESSAGES
    ================ */
+
+.flash {
+	padding: 10px 20px;
+	margin-bottom: 20px;
+	background: #D7FAE0;
+	color: #05300E;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	border: 1px solid rgba(0,0,0, 0.2);
+}
+
+.flash.error {
+	background: #f7c1bf;
+	color: #5E1818;
+}
+
+/* ===================
+    CORNER ADMIN PANEL
+   =================== */
+
+#admin-panel {
+	position: fixed;
+	top: 6px;
+	right: 6px;
+	text-align: right;
+	float: right;
+	font-size: 14px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	padding: 1px 7px;
+	background:rgba(0,0,0,0.4);
+	color: #fff;
+	z-index: 2;
+}
+
+#admin-panel a{
+	color: #eee;
+}
+
+#admin-panel small {
+	margin: 0;
+}
 
 /* ================
-    MOBILE: Links
+		Sign In Page
+	 ================ */
+	
+#page-signin {
+	width: 374px;
+	margin: 0 auto;
+	text-align: center;
+}
+
+#page-signin .submit-wrapper {
+	width: 374px;
+}
+
+/* ================
+    Dashboard
    ================ */
 
-/* ===============
-    MOBILE: Main
-   =============== */
+#dashboard-wrapper {
+	position: relative;
+	width: 100%;
+}
+#dashboard-wrapper section {
+	position: relative;
+	background: rgba(255,255,255,0.5);
+	/* border: 1px solid #e5e5e5; */
+	margin-bottom: 20px;
+	padding: 1%;
+	max-width: 100%;
+}
+
+section#links form input[type="text"] {
+	width: 94%;
+}
+
+#dashboard-wrapper h1 {
+	text-align: center;
+}
+
+section .btn-wrapper {text-align: center;}
+section#links .btn-wrapper {text-align: right; padding-right: 4px;}
+
+section#emails ul,
+section#links ul,
+section#shows ul {
+	list-style: none;
+	padding: 10px 0 0 0;
+	border-top: 1px solid rgba(0,0,0,0.2);
+}
+
+section#emails li,
+section#links li,
+section#shows li {
+	padding: 3px;
+	position: relative;
+}
+
+section#emails li:nth-child(even),
+section#links li:nth-child(even),
+section#shows li:nth-child(even) {
+	background: rgba(0,0,0,0.1);
+}
+
+section#emails li a,
+section#links li a {
+	display: block;
+	width: 175px;
+	height: 22px;
+	padding-left: 3px;
+}
+
+section#emails a.delete,
+section#links a.delete,
+section#links a.edit {
+	width: 22px;
+	text-indent: -9999px;
+	position: absolute;
+	right: 3px;
+	top: 3px;
+	}
+
+section#emails a.delete:hover,
+section#links a.delete:hover,
+section#links a.edit:hover,
+section#shows a.edit:hover,
+section#shows a.delete:hover {background-color: rgba(255,255,255,1);}
+	
+section#emails a.delete,
+section#links a.delete {
+	background: transparent url(../img/delete.gif) no-repeat center center;
+}
+section#links a.edit {
+	background: transparent url(../img/edit.gif) no-repeat center center;
+	right: 25px;
+}
+
+section#shows li {
+	display: block;
+	height: 60px;
+	padding: 0;
+	margin-bottom: 10px;
+	position: relative;
+}
+section#shows li img {
+	height: 60px;
+	width: 60px;
+	float: left;
+	border-right: 2px solid rgba(0,0,0,0.2);
+}
+
+section#shows li a {
+	display: block;
+	height: 30px;
+	vertical-align: top;
+	padding: 0 5px;
+	margin: 0;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+section#shows li p {
+	height: 15px;
+	font-size: 0.9em;
+	padding: 0 0 0 65px;
+	margin: 0;
+	text-shadow: 1px 1px 0px rgba(255,255,255, 0.8);
+	font-weight: bold;
+	color: rgba(0,0,0,0.7);
+}
+
+section#shows li a.delete,
+section#shows li a.edit {
+	height: 22px;
+	width: 10px;
+	text-indent: -9999px;
+	position: absolute;
+	right: 3px;
+	bottom: 3px;
+}
+
+section#shows li a.delete {
+	background: transparent url(../img/delete.gif) no-repeat center center;
+}
+section#shows li a.edit {
+	background: transparent url(../img/edit.gif) no-repeat center center;
+	right: 25px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ================================================================
+    View Show Page
+   ================================================================ */
+
+article {
+	position: relative;
+	background: rgba(255,255,255,0.8);
+	clear: both;
+	padding: 10px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	margin-bottom: 30px;
+}
+
+article h1 {
+	font-size: 2em;
+	margin: 0;
+	color: #000;
+}
+article h1 a, article h1 a:visited {color: #000;}
+article h1 a:hover {color: #000; text-decoration: none;}
+
+article h2 {
+	font-size: 1.2em;
+	margin: 0;
+	text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.8);
+	color: rgba(0, 0, 0, 0.5);
+	font-weight: normal;
+}
+
+article p {
+	margin: .5em 0;
+}
+
+article img {
+	border: 5px solid rgba(255,255,255,1);
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	vertical-align: top;
+	width: 200px;
+	-webkit-box-shadow: 0px 0px 4px rgba(50, 50, 50, 0.4);
+	-moz-box-shadow:    0px 0px 4px rgba(50, 50, 50, 0.4);
+	box-shadow:         0px 0px 4px rgba(50, 50, 50, 0.4);
+	width: 150px;
+}
+
+article .image1 {
+	float: left;
+	margin-right: 10px;
+}
+
+article .image2 {
+	float: right;
+	margin-left: 10px;
+	display: none;
+}
+
+article footer {
+	clear: both;
+}
+
+
+
+
+aside section {
+	background: rgba(255,255,255,0.8);
+	padding: 10px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	margin-bottom: 30px;
+}
+
+aside p {
+	margin: 0;
+	color: rgba(0,0,0,0.5);
+	font-style: italic;
+	font-size: 0.8em;
+}
+
+aside h1 {
+	text-align: center;
+	font-size: 1.5em;
+	margin: 0;
+}
+aside .signup {
+	text-align: center;
+}
+aside .signup input[type="email"] {
+	width: auto;
+}
+aside .signup .btn {
+	padding: 5px 10px 5px;
+	margin-top: -5px;
+	font-weight: bold;
+}
+
+aside .friends ul {
+	list-style: none;
+	padding: 0;
+}
+
+aside .friends li {
+	padding: 4px;
+}
+
+aside .friends li:nth-child(even) {
+	background: rgba(150,150,150,0.1);
+}
+footer {
+	color: #333;
+	text-align: right;
+	clear: both;
+	width: 100%;
+	padding: 5px 0;
+	margin: 0;
+	font-size: 0.7em;
+}
+
+footer p {padding: 0; margin: 0;}
 
 /* =============================================================================
    Media Queries
    ========================================================================== */
 
-@media only screen and (min-width: 560px) {
-
-
-/* ======================
-    INTERMEDIATE: Header
-   ====================== */
-
-/* ======================
-    INTERMEDIATE: Links
-   ====================== */
-	
-/* ======================
-    INTERMEDIATE: Main
-   ====================== */
-
-
+@media only screen and (min-width: 430px) {
+	body {
+		font-size: 13px;
+	}
+	#dashboard-wrapper section {
+		width: 400px;
+		margin: 0 auto 20px auto;
+	}
 }
 
-@media only screen and (min-width: 860px) {
-
-
-/* ====================
-    WIDE: Header       
-   ==================== */
-
+@media only screen and (min-width: 720px) {
+	body {font-size: 14px;}
 	
-/* ====================
-    WIDE: Links      
-   ==================== */
-
-/* ====================
-    WIDE: Main        
-   ==================== */
-
-/* ====================
-    WIDE: CSS3 Effects
-   ==================== */
-
+	article {
+		width: 68%;
+		float: right;
+	}
+	aside {
+		width: 28%;
+		font-size: 0.8em;
+	}
+	aside .signup input[type="email"] {
+		margin-bottom: 10px;
+	}
+	#dashboard-wrapper section {
+		width: 29.8%; /* 298px; */
+		float: left;
+		margin-right: 2%; /* 20px */
+	}
+	section#emails {margin-right: 0;}
+	
+	section#links form input[type="text"] {
+		width: 92%;
+	}
+	
+	header[role="banner"] {
+		height: 250px;
+		text-align: left;
+		margin-top: 0;
+	}
+	
+	header[role="banner"] h1, header[role="banner"] h2 {
+		margin-left: 20px;
+	}
+	
+	header[role="banner"] p {
+		display: block;
+		max-width: 500px;
+		font-size: 0.8em;
+	}
+	header[role="banner"] p.description {
+		font-size: 1em;
+	}
+	
+	header[role="banner"]:after, header[role="banner"]:before {
+		top: 250px;
+	}
+	
+	/* ALTERNATE HEADER */
+	header[role="banner"].alternate {
+		height: 130px;
+	}
+	
+	header[role="banner"].alternate:after, header[role="banner"].alternate:before {
+		top: 130px;
+	}
+	
+	header[role="banner"].alternate p {
+		position: absolute;
+		max-width: 100%;
+		top: 60px;
+		right: 0;
+		width: 58%;
+		font-size: 0.9em;
+	}
+	header[role="banner"].alternate p.description {
+		font-size: inherit;
+		top: 10px;
+	}
+	
 }
 
+@media only screen and (min-width: 850px) {
+	article .image1 img {
+		width: 200px;
+	}
+}
+
+@media only screen and (min-width: 1000px) {
+	header[role="banner"].alternate p {
+		width: 68%;
+		font-size: 1em;
+	}
+	header[role="banner"].alternate p.description {
+		top: 20px;
+	}
+}
 
 
 /* =============================================================================

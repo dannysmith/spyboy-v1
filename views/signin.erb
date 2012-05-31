@@ -1,6 +1,10 @@
-<h3>Please Sign In</h3>
-<form action="/admin" method="post" accept-charset="utf-8">
-  <input name="username" value="" placeholder="username">
-  <input type="password" name="password" value="" placeholder="password">
-  <input type="submit" name="submit" value="Sign In">
-</form>
+<div id="page-signin">
+  <h1>Please Sign In</h1>
+  <form action="/admin" method="post" accept-charset="utf-8">
+    <input type="text" name="username" value="" placeholder="username">
+    <input type="password" name="password" value="" placeholder="password">
+    <div class="submit-wrapper">
+      <input type="submit" name="submit" class="btn btn-primary" value="Sign In">
+    </div>
+  </form>
+</div>

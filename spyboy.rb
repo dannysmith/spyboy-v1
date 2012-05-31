@@ -1,32 +1,40 @@
 #spyboy.rb
 require "bundler/setup"
-require "sinatra/base"
+require 'sinatra/base'
+require 'sinatra/flash'
 require 'rubygems'
 require 'data_mapper'
 require 'carrierwave'
+require 'fog'
 require 'carrierwave/datamapper'
-require 'sinatra/flash'
+require 'tzinfo'
 
 ####################### CARRIERWAVE SETUP ##########################
 
-CarrierWave.configure do |config|  
-  config.root = "#{Dir.pwd}/public"
-# Set up Carrierwave - Production
-#   config.fog_credentials = {
-#     :provider               => 'AWS',       # required
-#     :aws_access_key_id      => 'XXX',       # required
-#     :aws_secret_access_key  => 'yyy',       # required
-#     :region                 => 'eu-west-1'  # optional, defaults to 'us-east-1'
-#   }
-#   config.fog_directory  = 'name_of_directory'                     # required
-#   config.fog_host       = 'https://assets.example.com'            # optional, defaults to nil
-#   config.fog_public     = false                                   # optional, defaults to true
-#   config.fog_attributes = {'Cache-Control'=>'max-age=315576000'}  # optional, defaults to {}
+CarrierWave.configure do |config|
+  if RACK_ENV == "production"
+    #Set up Carrierwave - Production
+    config.fog_credentials = {
+      :provider               => 'AWS',       # required
+      :aws_access_key_id      => 'XXX',       # required
+      :aws_secret_access_key  => 'yyy',       # required
+      :region                 => 'eu-west-1'  # optional, defaults to 'us-east-1'
+    }
+    config.fog_directory  = 'spyboy'                                # required
+    config.fog_attributes = {'Cache-Control'=>'max-age=315576000'}  # optional, cache set to 10 years.
+  else #if development mode
+    config.root = "#{Dir.pwd}/public"
+  end
 end
 
 #Set up CarrierWave image uploader
 class ShowImageUploader < CarrierWave::Uploader::Base
   include CarrierWave::MiniMagick
+  
+  if RACK_ENV == "production"
+    storage :fog
+  end
+  
   def extension_white_list
     %w(jpg jpeg gif png)
   end
@@ -37,9 +45,25 @@ class ShowImageUploader < CarrierWave::Uploader::Base
   def cache_dir
     "#{Dir.pwd}/public/img/uploads/tmp"
   end
+  def filename
+       @name ||= "#{secure_token}.#{file.extension}" if original_filename.present?
+  end
+
   process :resize_to_limit => [720,720]
   version :thumb do
     process :resize_to_fill => [60,60]
+  end
+  version :mini do
+    process :resize_to_fill => [32,32]
+  end
+  version :medium do
+    process :resize_to_fit => [200,600]
+  end
+  
+  protected
+  def secure_token
+    var = :"@#{mounted_as}_secure_token"
+    model.instance_variable_get(var) or model.instance_variable_set(var, SecureRandom.uuid)
   end
 end
 
@@ -53,8 +77,8 @@ class Link
 
   property :id,           Serial
   property :title,        String,    :required => true
-  property :url,          String,    :required => true
-  property :description,  String,    :required => true
+  property :url,          String,    :required => true, :length => 100
+  property :description,  Text,      :required => true
   property :created_at,   DateTime
 end
 
@@ -62,7 +86,7 @@ class Email
   include DataMapper::Resource
 
   property :id,         Serial
-  property :address,    String,    :required => true
+  property :address,    String,      :required => true
   property :created_at, DateTime
 end
 
@@ -70,10 +94,10 @@ class Show
   include DataMapper::Resource
 
   property :id,             Serial
-  property :title,          String,    :required => true
+  property :title,          String,    :required => true, :length => 150
   property :venue,          String,    :required => true
-  property :venue_url,      String
-  property :slug,           String
+  property :venue_url,      String,                       :length => 150
+  property :slug,           String,                       :length => 160
   property :date_and_time,  DateTime,  :required => true
   property :description,    Text
   property :created_at,     DateTime
@@ -85,8 +109,17 @@ class Show
     self.date_and_time.strftime('%a %d %b %Y')
   end
   
+  def short_date_to_s
+    self.date_and_time.strftime('%d %b %y')
+  end
+  
   def time_to_s
     self.date_and_time.strftime('%l:%M %p')
+  end
+  
+  def self.future
+    # Gets all shows that haven't started yet. +28800 is a rudimentary conversion from heroku time (UTC-7).
+    self.all(:date_and_time.gt => (Time.now + 28800), :order => [ :date_and_time.asc ])
   end
 end
 
@@ -98,42 +131,73 @@ DataMapper.auto_upgrade! #Tries to change table. Not always cleanly.
 
 class SpyBoy < Sinatra::Base
   
+  enable :sessions
+  register Sinatra::Flash
+  
   configure do
     ENV['ADMIN_USERNAME'] = "bob"
     ENV['ADMIN_PASSWORD'] = "password"
-    
-    enable :sessions
   end
+  
+  #Added because sinatra regenerates keys on each app start - this allows shotgun use.
+  configure(:development) { set :session_secret, "this_is_my_secret_for_coookies" }
+  
+  
+  
   
   
   ## Main -----------------
 
+
+  #Silly home-baked authentication
+  #Whitelist of pages that will have the authentication code run.
+  ["/dashboard", "/signout", "/link", "/link/*", "/show", "/show/*", "/email/*", "/email.*"].each do |path|
+    before path do
+      unless session[:admin_user]
+        flash[:info] = "Your session has timed out. Please log in again."
+        redirect "/admin" 
+      end
+    end
+  end
+  
+    
+  
+  
   get "/" do
     @links = Link.all
+    @shows = Show.future
     erb :index
   end
 
   get "/admin" do
-    erb :signin
+    if session[:admin_user]
+      redirect "dashboard"
+    else
+      erb :signin
+    end
   end
 
   post "/admin" do
-    # TODO: Set up a Session token and proper protection.
     if (params[:username] == ENV['ADMIN_USERNAME']) && (params[:password] == ENV['ADMIN_PASSWORD'])
-      erb :dashboard
+      session[:admin_user] = true
+      redirect "/dashboard"
     else
-      # TODO: Add Flash message for bad login
-      erb :signin
+      flash[:error] = "Wrong Login! Please try again."
+      redirect "/admin"
     end
   end
 
   get "/dashboard" do
     @links = Link.all
     @emails = Email.all
-    @shows = Show.all
+    @shows = Show.all(:order => [ :date_and_time.desc ])
     erb :dashboard
   end
 
+  get "/signout" do
+    session.clear
+    redirect "/"
+  end
 
 
 
@@ -149,6 +213,7 @@ class SpyBoy < Sinatra::Base
     
     @link = Link.new(params)
     if @link.save
+      flash[:info] = "Done!"
       redirect "/dashboard"
     else
       status 500
@@ -168,6 +233,7 @@ class SpyBoy < Sinatra::Base
     ["_method", "submit", "splat", "captures"].each { |k| params.delete(k) }
         
     if @link.update(params)
+      flash[:info] = "Done!"
       erb :_done, layout: :modal_layout
     else
       status 500
@@ -201,6 +267,7 @@ class SpyBoy < Sinatra::Base
     @show = Show.new(params)
     
     if @show.save
+      #Must save first in order to aquire an id. Then save again after building slug.
       str = @show.title
       str = str.gsub(/[^a-zA-Z0-9 ]/,"")
       str = str.gsub(/[ ]+/," ")
@@ -209,6 +276,7 @@ class SpyBoy < Sinatra::Base
       str = str.downcase
       @show.slug = str
       @show.save
+      flash[:info] = "Added show: \"#{params[:title]}\"."
       erb :_done, layout: :modal_layout
     else
       status 500
@@ -230,6 +298,7 @@ class SpyBoy < Sinatra::Base
     ["_method", "submit", "splat", "captures"].each { |k| params.delete(k) }
         
     if @show.update(params)
+      flash[:info] = "\"#{params[:title]}\" has been updated."
       erb :_done, layout: :modal_layout
     else
       status 500
@@ -243,7 +312,7 @@ class SpyBoy < Sinatra::Base
       status 200
     else
       status 404
-      "Link could not be found"
+      "Show could not be found"
     end
   end
   
@@ -271,11 +340,12 @@ class SpyBoy < Sinatra::Base
     
     @email = Email.new(params)
     if @email.save
-      # TODO: Add Flash Message & Proper Error Handling/Validation.
+      flash[:info] = "Your email's been added to the mailing list."
       redirect "/"
     else
       status 500
-      "An Error Occured. The Email couldn't be added couldn't save."
+      flash[:error] = "Sorry! An error's occured. Please try signing up again."
+      redirect "/"
     end
   end
 
@@ -299,6 +369,7 @@ class SpyBoy < Sinatra::Base
   end
   
   get "/:show_slug" do
+    @links = Link.all
     @show = Show.first(slug: params[:show_slug])
     erb :view_show
   end

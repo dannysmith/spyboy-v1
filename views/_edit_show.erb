@@ -1,13 +1,36 @@
-<form action="/show/<%= @show.id %>" method="post" enctype="multipart/form-data">
-  <input name="title" value="<%= @show.title %>" placeholder="Title">*
-  <input name="venue" value="<%= @show.venue %>" placeholder="Venue name">*
-  <input name="venue_url" value="<%= @show.venue_url %>" placeholder="Venue URL">
-  <img src="<%= @show.image1.thumb.url %>" alt="Show Image" />
-  <input type="file" name="image1">
-  <img src="<%= @show.image2.thumb.url %>" alt="Show Image" />
-  <input type="file" name="image2">
-  <textarea name="description" placeholder="description"><%= @show.description %></textarea>
+<form class="validate" action="/show/<%= @show.id %>" method="post" enctype="multipart/form-data" accept-charset="utf-8">
+  <ol>
+    <li>
+      <label for="title">Title</label>
+      <input type="text" name="title" value="<%= @show.title %>" placeholder="Title" class="required">
+    </li>
+    <li>
+      <label for="venue">Venue Name</label>
+      <input type="text" name="venue" value="<%= @show.venue %>" placeholder="Venue name" class="required">
+    </li>
+    <li>
+      <label for="venue_url">Venue URL</label>
+      <input type="text" name="venue_url" value="<%= @show.venue_url %>" placeholder="Venue URL (optional)">
+    </li>
+    <li class="file-upload">
+      <img src="<%= @show.image1.mini.url %>" alt="Show Image" />
+      <input type="file" name="image1">
+    </li>
+    <li class="file-upload">
+      <img src="<%= @show.image2.mini.url %>" alt="Show Image" />
+      <input type="file" name="image2">
+    </li>
+    <li>
+      <label for="description">Description</label>
+      <textarea name="description" class="required rte-editor"><%= @show.description %></textarea>
+    </li>
+</ol>
+
+<div class="modal-right-panel">
   <input type="text" id="datetimefield" value="<%= @show.date_and_time %>" name="date_and_time">
   <input type="hidden" name="_method" value="put">
-  <input type="submit" name="submit" value="Update Show Details">
+  <div class="submit-wrapper">
+    <input class="btn btn-primary" type="submit" name="submit" value="Save Show Details">
+  </div>
+</div>
 </form>

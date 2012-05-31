@@ -1,60 +1,77 @@
-<section>
-  <h1>Links</h1>
-  <form action="link" method="post" accept-charset="utf-8">
-    <input name="title" value="" placeholder="Title">
-    <input name="url" value="" placeholder="http://">
-    <input name="description" value="" placeholder="description">
-    <input type="submit" name="submit" value="Submit">
-  </form>
-  <ul>
-    <% if @links == nil %>
-      <p>There are no links yet</p>
-    <% else %>
-      <% @links.each do |l| %>
-        <li>
-          <a href="<%= l.url %>" title="<%= l.description %>"><%= l.title %></a>
-          (<a href="/link/<%= l.id %>" class="delete">x</a> | 
-           <a href="/link/<%= l.id %>/edit" data-fancybox-type="iframe" class="fancybox-small">e</a>)
-        </li>
+<div id="dashboard-wrapper">
+  <section id="shows">
+    <h1>Shows</h1>
+    <p>
+      <div class="btn-wrapper">
+        <a class="btn btn-primary fancybox-large" href="/show/add" data-fancybox-type="iframe">Add a New Show</a>
+      </div>
+    </p>
+    <ul>
+      <% if @shows == [] %>
+        <p>There are no shows yet</p>
+      <% else %>
+        <% @shows.each do |s| %>
+          <li>
+            <img src="<%= s.image1.thumb.url %>" alt="Image" />
+            <a href="/<%= s.slug %>" title="<%= s.title %>" target="_blank"><%= s.title %></a>
+            <p><%= s.short_date_to_s %></p>
+            <a href="/show/<%= s.id %>" class="delete">delete</a> 
+            <a href="/show/<%= s.id %>/edit" data-fancybox-type="iframe" class="fancybox-large edit">edit</a>
+          </li>
+        <% end %>
       <% end %>
-    <% end %>
-  </ul>
-</section>
+    </ul>
+  </section>
+  <section id="links">
+    <h1>Links</h1>
+    <form action="link" method="post" accept-charset="utf-8" class="validate">
+      <span>
+      <label for="title">Title *</label>
+      <input type="text" name="title" value="" placeholder="Title" class="required">
+      </span>
+      <span>
+      <label for="url">URL *</label>
+      <input type="text" name="url" value="" placeholder="http://" class="required">
+      </span>
+      <span>
+      <label for="description">Description *</label>
+      <input type="text" name="description" value="" placeholder="description" class="required">
+      </span>
+      <div class="btn-wrapper">
+        <input type="submit" name="submit" class="btn btn-primary" value="Add Link">
+      </div>
+    </form>
+    <ul>
+      <% if @links == [] %>
+        <p>There are no links yet</p>
+      <% else %>
+        <% @links.each do |l| %>
+          <li>
+            <a href="<%= l.url %>" title="<%= l.description %>"><%= l.title %></a>
+            <a href="/link/<%= l.id %>/edit" data-fancybox-type="iframe" class="fancybox-small edit">edit</a>
+            <a href="/link/<%= l.id %>" class="delete">delete</a>
+          </li>
+        <% end %>
+      <% end %>
+    </ul>
+  </section>
 
-<section>
-  <h1>Email Addresses</h1>
-  <ul>
-    <% if @emails == nil %>
-      <p>There are no email addresses signed up yet</p>
-    <% else %>
-      <% @emails.each do |e| %>
-        <li>
-          <a href="mailto:<%= e.address %>"><%= e.address %></a>
-          (<a href="/email/<%= e.id %>" class="delete">x</a>)
-        </li>
+  <section id="emails">
+    <h1>Email Addresses</h1>
+    <div class="btn-wrapper">
+      <a href="/email.csv" class="btn btn-primary">Copy Email Addresses</a>
+    </div>
+    <ul>
+      <% if @emails == [] %>
+        <p>There are no email addresses signed up yet</p>
+      <% else %>
+        <% @emails.each do |e| %>
+          <li>
+            <a href="mailto:<%= e.address %>"><%= e.address %></a>
+            <a href="/email/<%= e.id %>" class="delete">delete</a>
+          </li>
+        <% end %>
       <% end %>
-    <% end %>
-  </ul>
-</section>
-
-<section>
-  <h1>Shows</h1>
-  <p>
-    <a href="/show/add" data-fancybox-type="iframe" class="fancybox-large">Add a New Show</a>
-  </p>
-  <ul>
-    <% if @shows == nil %>
-      <p>There are no shows yet</p>
-    <% else %>
-      <% @shows.each do |s| %>
-        <li>
-          <img src="<%= s.image1.thumb.url %>" alt="Image" />
-          <a href="/<%= s.slug %>" target="_blank"><%= s.title %></a>
-          <p><%= s.date_to_s %> at <%= s.time_to_s%></p>
-          <a href="/show/<%= s.id %>" class="delete">delete</a> 
-          <a href="/show/<%= s.id %>/edit" data-fancybox-type="iframe" class="fancybox-large">edit</a>
-        </li>
-      <% end %>
-    <% end %>
-  </ul>
-</section>
+    </ul>
+  </section>
+</div>

@@ -1,0 +1,21 @@
+<aside>
+  <section class="signup">
+    <h1>Sign Up</h1>
+    <p>to receive up-to-date information on shows via email</p>
+    <form class="validate" action="email" method="post" accept-charset="utf-8">
+      <label for="address">Email Address</label>
+      <input type="email" name="address" class="required email" placeholder="email@address.com">
+      <input type="submit" name="submit" class="btn" value="Sign Up">
+    </form>
+  </section>
+  <% unless @links == [] %>
+    <section class="friends">
+      <h1>Friends</h1>
+        <ul>
+          <% @links.each  do |link| %>
+            <li><a href="<%= link.url %>"><%= link.title %></a> &ndash; <%= link.description %></li>
+          <% end %>
+        </ul>
+    </section>
+  <% end %>
+</aside>

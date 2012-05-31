@@ -1,7 +1,22 @@
-<form action="/link/<%= @link.id %>" method="post" accept-charset="utf-8">
-  <input name="title" value="<%= @link.title %>" placeholder="Title">
-  <input name="url" value="<%= @link.url %>" placeholder="http://">
-  <input name="description" value="<%= @link.description %>" placeholder="description">
-  <input type="hidden" name="_method" value="put">
-  <input type="submit" name="submit" value="Submit">
+<form action="/link/<%= @link.id %>" method="post" accept-charset="utf-8" class="validate">
+  <ol>
+    <li>
+      <label for="title">Title</label>
+      <input type="text" name="title" id="title" value="<%= @link.title %>" placeholder="Title" class="required">
+    </li>
+    <li>
+      <label for="url">URL</label>
+      <input type="text" name="url" id="url" value="<%= @link.url %>" placeholder="http://" class="required">
+    </li>
+    <li>
+      <label for="description">Description</label>
+      <input type="text" name="description" id="description" value="<%= @link.description %>" placeholder="description" class="required">
+    </li>
+    <li>
+      <input type="hidden" name="_method" value="put">
+      <div class="submit-wrapper">
+        <input class="btn btn-primary" type="submit" name="submit" value="Save">
+      </div>
+    </li>
+  </ol>
 </form>

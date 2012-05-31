@@ -1,9 +1,27 @@
-This is the index Page.
+<div id="show-list">
+  <% if @shows == [] %>
+    <p>There are no shows planned</p>
+  <% else %>
+    <% @shows.each do |show| %>
+      <article id="<%= show.slug %>" class="vevent">
+        <header>
+          <h1><a href="/<%= show.slug %>" class="summary url"><%= show.title%></a></h1>
+          <h2><time datetime="<%= show.date_and_time %>" class="dtstart"><%= show.date_to_s%> at <%= show.time_to_s.downcase %></time> &#8212; 
+            <%= "<a href='#{show.venue_url}'>" unless show.venue_url.nil? || show.venue_url.empty? %>
+              <span class="location"><%= show.venue %></span>
+            <%= "</a>" unless show.venue_url.nil? || show.venue_url.empty? %>
+            <div class="fb-like" data-href="<% request.base_url + "/" + show.slug %>" data-send="true" data-layout="button_count" data-width="450" data-show-faces="true"></div>
+        </header>
+        <div class="show-description description">
+          <a href="<%= show.image1.url %>" class="fancybox image1"><img src="<%= show.image1.medium.url %>" alt="SpyBoy - Folk, roots, blues and acoustic music in East Sussex - <%= show.title %>" /></a>
+          <%= show.description %>
+          <a href="<%= show.image2.url %>" class="fancybox image2"><img src="<%= show.image2.medium.url %>" alt="SpyBoy - Folk, roots, blues and acoustic music in East Sussex - <%= show.title %>" /></a>
+        </div>
+        <footer></footer>
+      </article>
+    <% end %>
+  <% end %>
+  
+</div>
 
-<section>
-  <h1>Sign Up</h1>
-  <form action="email" method="post" accept-charset="utf-8">
-    <input name="address" value="" placeholder="email@address.com">
-    <input type="submit" name="submit" value="Sign Up">
-  </form>
-</section>
+<%= erb :_sidebar %>

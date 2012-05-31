@@ -1,10 +1,35 @@
-<form action="/show" method="post" enctype="multipart/form-data">
-  <input name="title" value="" placeholder="Title">*
-  <input name="venue" value="" placeholder="Venue name">*
-  <input name="venue_url" value="" placeholder="Venue URL">
-  <input type="file" name="image1">
-  <input type="file" name="image2">
-  <textarea name="description" placeholder="description"></textarea>
-  <input type="text" id="datetimefield" name="date_and_time">
-  <input type="submit" name="submit" value="Create Show">
+<form class="validate" action="/show" method="post" enctype="multipart/form-data" accept-charset="utf-8">
+  <ol>
+    <li>
+      <label for="title">Title</label>
+      <input type="text" name="title" value="" placeholder="Title" class="required">
+    </li>
+    <li>
+      <label for="venue">Venue Name</label>
+      <input type="text" name="venue" value="" placeholder="Venue name" class="required">
+    </li>
+    <li>
+      <label for="venue_url">Venue URL</label>
+      <input type="text" name="venue_url" value="" placeholder="Venue URL (optional)">
+    </li>
+    <li class="file-upload">
+      <img src="" alt="Show Image" />
+      <input type="file" name="image1">
+    </li>
+    <li class="file-upload">
+      <img src="" alt="Show Image" />
+      <input type="file" name="image2">
+    </li>
+    <li>
+      <label for="description">Description</label>
+      <textarea name="description" class="required rte-editor">Type the show details here</textarea>
+    </li>
+</ol>
+
+<div class="modal-right-panel">
+  <input type="text" id="datetimefield" value="" name="date_and_time">
+  <div class="submit-wrapper">
+    <input class="btn btn-primary" type="submit" name="submit" value="Create Show">
+  </div>
+</div>
 </form>

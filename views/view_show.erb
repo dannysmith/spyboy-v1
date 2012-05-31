@@ -1,12 +1,18 @@
-<article>
+<article id="<%= @show.slug %>" class="vevent">
   <header>
-    <h1><%= @show.title%></h1>
-    <h2><%= @show.date_to_s%></h2>
-    <p><%= @show.time_to_s%></p>
-    <p>
+    <h1><a href="/<%= Request.url + "/" + @show.slug %>" class="summary url"><%= @show.title%></a></h1>
+    <h2><time datetime="<%= show.date_and_time %>" class="dtstart"><%= @show.date_to_s%> <span>at <%= @show.time_to_s.downcase %></time> &#8212; 
       <%= "<a href='#{@show.venue_url}'>" unless @show.venue_url.nil? || @show.venue_url.empty? %>
-        <%= @show.venue %>
+        <span class="location"><%= @show.venue %></span>
       <%= "</a>" unless @show.venue_url.nil? || @show.venue_url.empty? %>
+      <div class="fb-like" data-href="<% request.base_url + "/" + @show.slug %>" data-send="true" data-layout="button_count" data-width="450" data-show-faces="true">
   </header>
-  <%= @show.description %>
+  <div class="show-description description">
+    <a href="<%= @show.image1.url %>" class="fancybox image1"><img src="<%= @show.image1.medium.url %>" alt="SpyBoy - Folk, roots, blues and acoustic music in East Sussex - <%= @show.title %>" /></a>
+    <%= @show.description %>
+    <a href="<%= @show.image2.url %>" class="fancybox image2"><img src="<%= @show.image2.medium.url %>" alt="SpyBoy - Folk, roots, blues and acoustic music in East Sussex - <%= @show.title %>" /></a>
+  </div>
+  <footer>
+  </footer>
 </article>
+<%= erb :_sidebar %>
