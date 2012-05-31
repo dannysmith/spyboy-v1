@@ -182,7 +182,7 @@ class SpyBoy < Sinatra::Base
 
   get "/dashboard" do
     @links = Link.all
-    @emails = Email.all
+    @emails = Email.all(:order => [ :address.asc ])
     @shows = Show.all(:order => [ :date_and_time.desc ])
     erb :dashboard
   end

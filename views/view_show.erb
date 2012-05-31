@@ -5,7 +5,7 @@
       <%= "<a href='#{@show.venue_url}'>" unless @show.venue_url.nil? || @show.venue_url.empty? %>
         <span class="location"><%= @show.venue %></span>
       <%= "</a>" unless @show.venue_url.nil? || @show.venue_url.empty? %>
-      <div class="fb-like" data-href="<% request.base_url + "/" + @show.slug %>" data-send="true" data-layout="button_count" data-width="450" data-show-faces="true">
+      <div class="fb-like" data-href="<%= request.url %>" data-send="true" data-layout="button_count" data-width="450" data-show-faces="true">
   </header>
   <div class="show-description description">
     <a href="<%= @show.image1.url %>" class="fancybox image1"><img src="<%= @show.image1.medium.url %>" alt="SpyBoy - Folk, roots, blues and acoustic music in East Sussex - <%= @show.title %>" /></a>
