@@ -33,7 +33,7 @@ header[role="banner"]:after, header[role="banner"]:before {
 	content: "";
 	width: 0; 
 	height: 0; 
-	border-top: 20px solid #ba672f; 
+	border-top: 10px solid #ba672f; 
 	border-left: 20px solid transparent;
 	top: 200px;
 	left: 0px;
