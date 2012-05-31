@@ -126,8 +126,12 @@ DataMapper.auto_upgrade! #Tries to change table. Not always cleanly.
 
 class SpyBoy < Sinatra::Base
   
-  enable :sessions
-  set :session_secret, "this_is_my_secret_for_coookies_woop"
+  configure(:development) do
+    enable :sessions
+  end
+  
+  set :session_secret, ENV['SESSION_SECRET'] ||= 'this_is_my_super_secret_foo'
+  use Rack::Session::Cookie
   register Sinatra::Flash
   
   configure do
