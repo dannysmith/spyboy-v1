@@ -1,7 +1,7 @@
 <article id="<%= @show.slug %>" class="vevent">
   <header>
-    <h1><a href="/<%= Request.url + "/" + @show.slug %>" class="summary url"><%= @show.title%></a></h1>
-    <h2><time datetime="<%= show.date_and_time %>" class="dtstart"><%= @show.date_to_s%> <span>at <%= @show.time_to_s.downcase %></time> &#8212; 
+    <h1><a href="<%= request.url %>" class="summary url"><%= @show.title%></a></h1>
+    <h2><time datetime="<%= @show.date_and_time %>" class="dtstart"><%= @show.date_to_s%> <span>at <%= @show.time_to_s.downcase %></time> &#8212; 
       <%= "<a href='#{@show.venue_url}'>" unless @show.venue_url.nil? || @show.venue_url.empty? %>
         <span class="location"><%= @show.venue %></span>
       <%= "</a>" unless @show.venue_url.nil? || @show.venue_url.empty? %>

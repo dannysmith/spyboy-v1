@@ -13,28 +13,22 @@ require 'tzinfo'
 
 puts 
 CarrierWave.configure do |config|
-  if ENV["RACK_ENV"] == "production"
-    #Set up Carrierwave - Production
-    config.fog_credentials = {
-      :provider               => 'AWS',       # required
-      :aws_access_key_id      => 'XXX',       # required
-      :aws_secret_access_key  => 'yyy',       # required
-      :region                 => 'eu-west-1'  # optional, defaults to 'us-east-1'
-    }
-    config.fog_directory  = 'spyboy'                                # required
-    config.fog_attributes = {'Cache-Control'=>'max-age=315576000'}  # optional, cache set to 10 years.
-  else #if development mode
-    config.root = "#{Dir.pwd}/public"
-  end
+  #Set up Carrierwave - Production
+  config.fog_credentials = {
+    :provider               => 'AWS',       # required
+    :aws_access_key_id      => 'AKIAI7TIP7BM4DQTUJHQ',       # required
+    :aws_secret_access_key  => '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',       # required
+    :region                 => 'eu-west-1'  # optional, defaults to 'us-east-1'
+  }
+  config.fog_directory  = 'spyboy'                                # required
+  config.fog_attributes = {'Cache-Control'=>'max-age=315576000'}  # optional, cache set to 10 years.
 end
 
 #Set up CarrierWave image uploader
 class ShowImageUploader < CarrierWave::Uploader::Base
   include CarrierWave::MiniMagick
   
-  if ENV["RACK_ENV"] == "production"
-    storage :fog
-  end
+  storage :fog
   
   def extension_white_list
     %w(jpg jpeg gif png)
@@ -44,7 +38,7 @@ class ShowImageUploader < CarrierWave::Uploader::Base
     "#{Dir.pwd}/public/img/uploads"
   end
   def cache_dir
-    "#{Dir.pwd}/public/img/uploads/tmp"
+    "#{Dir.pwd}/tmp/uploads"
   end
   def filename
        @name ||= "#{secure_token}.#{file.extension}" if original_filename.present?
@@ -133,6 +127,7 @@ DataMapper.auto_upgrade! #Tries to change table. Not always cleanly.
 class SpyBoy < Sinatra::Base
   
   enable :sessions
+  set :session_secret, "this_is_my_secret_for_coookies_woop"
   register Sinatra::Flash
   
   configure do
@@ -140,18 +135,11 @@ class SpyBoy < Sinatra::Base
     ENV['ADMIN_PASSWORD'] = "password"
   end
   
-  #Added because sinatra regenerates keys on each app start - this allows shotgun use.
-  configure(:development) { set :session_secret, "this_is_my_secret_for_coookies" }
-  
-  
-  
-  
-  
   ## Main -----------------
 
 
-  #Silly home-baked authentication
-  #Whitelist of pages that will have the authentication code run.
+  # Silly home-baked authentication
+  # Whitelist of pages that will have the authentication code run.
   ["/dashboard", "/signout", "/link", "/link/*", "/show", "/show/*", "/email/*", "/email.*"].each do |path|
     before path do
       unless session[:admin_user]
