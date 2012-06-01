@@ -9,15 +9,19 @@ require 'fog'
 require 'carrierwave/datamapper'
 require 'tzinfo'
 
+configure(:development) do
+  require './development-envs'
+end
+
+
 ####################### CARRIERWAVE SETUP ##########################
 
-puts 
 CarrierWave.configure do |config|
   #Set up Carrierwave - Production
   config.fog_credentials = {
     :provider               => 'AWS',       # required
-    :aws_access_key_id      => 'AKIAI7TIP7BM4DQTUJHQ',       # required
-    :aws_secret_access_key  => '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',       # required
+    :aws_access_key_id      => ENV['AWS_ACCESS_KEY_ID'],       # required
+    :aws_secret_access_key  => ENV['AWS_SECRET_ACCESS_KEY'],       # required
     :region                 => 'eu-west-1'  # optional, defaults to 'us-east-1'
   }
   config.fog_directory  = 'spyboy'                                # required
@@ -134,11 +138,6 @@ class SpyBoy < Sinatra::Base
   use Rack::Session::Cookie
   register Sinatra::Flash
   
-  configure do
-    ENV['ADMIN_USERNAME'] = "bob"
-    ENV['ADMIN_PASSWORD'] = "password"
-  end
-  
   ## Main -----------------
 
 
@@ -154,6 +153,16 @@ class SpyBoy < Sinatra::Base
   end
   
     
+    
+    
+    
+    
+  get "/d" do
+    puts "Debugging..."
+    puts ENV['AWS_SECRET_ACCESS_KEY']
+    puts ENV['ADMIN_USERNAME']
+    erb "<h1>Debug</h1>"
+  end
   
   
   get "/" do
