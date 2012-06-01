@@ -9,24 +9,8 @@ require 'fog'
 require 'carrierwave/datamapper'
 require 'tzinfo'
 
-configure(:development) do
-  require './development-envs'
-end
-
 
 ####################### CARRIERWAVE SETUP ##########################
-
-CarrierWave.configure do |config|
-  #Set up Carrierwave - Production
-  config.fog_credentials = {
-    :provider               => 'AWS',       # required
-    :aws_access_key_id      => ENV['AWS_ACCESS_KEY_ID'],       # required
-    :aws_secret_access_key  => ENV['AWS_SECRET_ACCESS_KEY'],       # required
-    :region                 => 'eu-west-1'  # optional, defaults to 'us-east-1'
-  }
-  config.fog_directory  = 'spyboy'                                # required
-  config.fog_attributes = {'Cache-Control'=>'max-age=315576000'}  # optional, cache set to 10 years.
-end
 
 #Set up CarrierWave image uploader
 class ShowImageUploader < CarrierWave::Uploader::Base
@@ -131,11 +115,24 @@ DataMapper.auto_upgrade! #Tries to change table. Not always cleanly.
 class SpyBoy < Sinatra::Base
   
   configure(:development) do
-    enable :sessions
+    require './development-envs'
+    enable :sessions #disable sessions in prod.
+  end
+  
+  CarrierWave.configure do |config|
+    #Set up Carrierwave - Production
+    config.fog_credentials = {
+      :provider               => 'AWS',       # required
+      :aws_access_key_id      => ENV['AWS_ACCESS_KEY_ID'],       # required
+      :aws_secret_access_key  => ENV['AWS_SECRET_ACCESS_KEY'],       # required
+      :region                 => 'eu-west-1'  # optional, defaults to 'us-east-1'
+    }
+    config.fog_directory  = 'spyboy'                                # required
+    config.fog_attributes = {'Cache-Control'=>'max-age=315576000'}  # optional, cache set to 10 years.
   end
   
   set :session_secret, ENV['SESSION_SECRET'] ||= 'this_is_my_super_secret_foo'
-  use Rack::Session::Cookie
+  use Rack::Session::Cookie #USe Cookies instead of enable:sessions in Prod.
   register Sinatra::Flash
   
   ## Main -----------------
