@@ -22,14 +22,15 @@ class ShowImageUploader < CarrierWave::Uploader::Base
   def extension_white_list
     %w(jpg jpeg gif png)
   end
-  # storage :fog
   def store_dir
     "#{Dir.pwd}/public/img/uploads"
   end
   def cache_dir
+    # Must be in /tmp in order to work on Heroku
     "#{Dir.pwd}/tmp/uploads"
   end
   def filename
+      # Unique filenames for each uploaded file.
        @name ||= "#{secure_token}.#{file.extension}" if original_filename.present?
   end
 
@@ -45,6 +46,7 @@ class ShowImageUploader < CarrierWave::Uploader::Base
   end
   
   protected
+  
   def secure_token
     var = :"@#{mounted_as}_secure_token"
     model.instance_variable_get(var) or model.instance_variable_set(var, SecureRandom.uuid)
@@ -120,6 +122,11 @@ class SpyBoy < Sinatra::Base
     enable :sessions #disable sessions in prod.
   end
   
+  configure do
+    # Set default Header Style for App
+    ENV['HEADER_STYLE'] == "normal"
+  end
+  
   CarrierWave.configure do |config|
     #Set up Carrierwave - Production
     config.fog_credentials = {
@@ -133,9 +140,9 @@ class SpyBoy < Sinatra::Base
   end
   
   set :session_secret, ENV['SESSION_SECRET'] ||= 'this_is_my_super_secret_foo'
-  use Rack::Session::Cookie #USe Cookies instead of enable:sessions in Prod.
-  register Sinatra::Flash
-  helpers Sinatra::OutputBuffer::Helpers
+  use Rack::Session::Cookie # Use Cookies instead of enable:sessions in Prod.
+  register Sinatra::Flash # Enable flash messages
+  helpers Sinatra::OutputBuffer::Helpers # Enable content_for:
   
   
   
@@ -144,7 +151,7 @@ class SpyBoy < Sinatra::Base
 
   # Silly home-baked authentication
   # Whitelist of pages that will have the authentication code run.
-  ["/dashboard", "/signout", "/link", "/link/*", "/show", "/show/*", "/email/*", "/email.*"].each do |path|
+  ["/dashboard", "/signout", "/link", "/link/*", "/show", "/show/*", "/email/*", "/email.*", "/toggleheader"].each do |path|
     before path do
       unless session[:admin_user]
         flash[:info] = "Your session has timed out. Please log in again."
@@ -152,19 +159,6 @@ class SpyBoy < Sinatra::Base
       end
     end
   end
-  
-    
-    
-    
-    
-    
-  get "/d" do
-    puts "Debugging..."
-    puts ENV['AWS_SECRET_ACCESS_KEY']
-    puts ENV['ADMIN_USERNAME']
-    erb "<h1>Debug</h1>"
-  end
-  
   
   get "/" do
     @links = Link.all
@@ -371,9 +365,30 @@ class SpyBoy < Sinatra::Base
     return @emails
   end
   
+  
+  
+  
+  
+  
+  # Other Routes --------------------
+  
+  post "/toggleheader" do
+    if (ENV['HEADER_STYLE'] == "alternate")
+      ENV['HEADER_STYLE'] = "normal"
+    else
+      ENV['HEADER_STYLE'] = "alternate"
+    end
+    puts "Header set to: #{ENV['HEADER_STYLE']}"
+    status 200
+  end
+  
   get "/:show_slug" do
     @links = Link.all
     @show = Show.first(slug: params[:show_slug])
-    erb :view_show
+    if @show.nil?
+      status 404
+    else
+      erb :view_show
+    end
   end
 end

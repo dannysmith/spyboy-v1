@@ -38,7 +38,7 @@
     </div>
   <% end %>
   <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>very</em> old! <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
-  <header role="banner">
+  <header role="banner" <%= "class=\"alternate\"" if (ENV['HEADER_STYLE'] == "alternate") %>>
     <h1><a href="/">SpyBoy</a></h1>
     <h2>music to your ears</h2>
     <p class="description"><strong>Folk</strong>, <strong>roots</strong>, <strong>blues</strong> and <strong>acoustic</strong> music at a number of venues in and around East Sussex.</p>

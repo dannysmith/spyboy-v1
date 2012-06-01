@@ -81,7 +81,13 @@ $(function(){
 	
 	//Toggle alternate header
 	$(".toggle-header").click(function() {
-		$('header[role]').toggleClass("alternate");
+		$.ajax({url: "/toggleheader",
+						type: 'POST',
+						async: false,
+						complete: function(response, status) {
+							$('header[role]').toggleClass("alternate");
+						}
+					});
 	});
 	
 	
