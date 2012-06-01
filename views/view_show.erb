@@ -1,3 +1,5 @@
+<% content_for :title do @show.title + " - " end %>
+
 <article id="<%= @show.slug %>" class="vevent">
   <header>
     <h1><a href="<%= request.url %>" class="summary url"><%= @show.title%></a></h1>

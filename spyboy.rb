@@ -2,6 +2,7 @@
 require "bundler/setup"
 require 'sinatra/base'
 require 'sinatra/flash'
+require 'sinatra/outputbuffer'
 require 'rubygems'
 require 'data_mapper'
 require 'carrierwave'
@@ -134,6 +135,9 @@ class SpyBoy < Sinatra::Base
   set :session_secret, ENV['SESSION_SECRET'] ||= 'this_is_my_super_secret_foo'
   use Rack::Session::Cookie #USe Cookies instead of enable:sessions in Prod.
   register Sinatra::Flash
+  helpers Sinatra::OutputBuffer::Helpers
+  
+  
   
   ## Main -----------------
 
