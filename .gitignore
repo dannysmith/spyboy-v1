@@ -1,3 +1,4 @@
 .bundle/**/*
 public/img/uploads/**/*
 development-envs.rb
+notes+artwork/*
