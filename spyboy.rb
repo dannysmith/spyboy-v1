@@ -125,6 +125,9 @@ class SpyBoy < Sinatra::Base
   configure do
     # Set default Header Style for App
     ENV['HEADER_STYLE'] == "normal"
+    
+    :static_cache_control, [:public, :max_age => 3600]
+    
   end
   
   CarrierWave.configure do |config|
