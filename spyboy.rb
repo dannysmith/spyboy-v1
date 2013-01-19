@@ -144,7 +144,10 @@ class SpyBoy < Sinatra::Base
   register Sinatra::Flash # Enable flash messages
   helpers Sinatra::OutputBuffer::Helpers # Enable content_for:
   
-  
+  #Set HTTP Headers
+  before do
+    headers "Content-Type" => "text/html; charset=utf-8"
+  end
   
   ## Main -----------------
 
@@ -383,6 +386,10 @@ class SpyBoy < Sinatra::Base
   end
   
   get "/:show_slug" do
+    if settings.environment != :development
+      response['Cache-Control'] = 'public, max-age=600' #Set Cache HTTP headers.
+    end
+    
     @links = Link.all
     @show = Show.first(slug: params[:show_slug])
     if @show.nil?

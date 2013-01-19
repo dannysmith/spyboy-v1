@@ -443,11 +443,11 @@ aside .friends li:nth-child(even) {
 	background: rgba(150,150,150,0.1);
 }
 footer {
-	color: #333;
+	color: #fff;
+	background: rgba(0,0,0,0.6);
 	text-align: right;
 	clear: both;
-	width: 100%;
-	padding: 5px 0;
+	padding: 3px;
 	margin: 0;
 	font-size: 0.7em;
 }
@@ -565,6 +565,7 @@ footer p {padding: 0; margin: 0;}
   * { background: transparent !important; color: black !important; box-shadow:none !important; text-shadow: none !important; filter:none !important; -ms-filter: none !important; } /* Black prints faster: h5bp.com/s */
   a, a:visited { text-decoration: underline; }
   a[href]:after { content: " (" attr(href) ")"; }
+	a.noprint:after { content: " ";}
   abbr[title]:after { content: " (" attr(title) ")"; }
   .ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after { content: ""; }  /* Don't show links for images, or javascript/internal links */
   pre, blockquote { border: 1px solid #999; page-break-inside: avoid; }
@@ -574,4 +575,5 @@ footer p {padding: 0; margin: 0;}
   @page { margin: 0.5cm; }
   p, h2, h3 { orphans: 3; widows: 3; }
   h2, h3 { page-break-after: avoid; }
+	.sidebar {display: none;}
 }
