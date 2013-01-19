@@ -126,7 +126,7 @@ class SpyBoy < Sinatra::Base
     # Set default Header Style for App
     ENV['HEADER_STYLE'] == "normal"
     
-    :static_cache_control, [:public, {:max_age => 3600}]
+    set :static_cache_control, [:public, :max_age => 3600]
     
   end
   
