@@ -57,23 +57,4 @@
       <% end %>
     </ul>
   </section>
-
-  <section id="emails">
-    <h1>Email Addresses</h1>
-    <div class="btn-wrapper">
-      <a href="/email.csv" class="btn btn-primary">Copy Email Addresses (<%= @emails.count %>)</a>
-    </div>
-    <ul>
-      <% if @emails == [] %>
-        <p>There are no email addresses signed up yet</p>
-      <% else %>
-        <% @emails.each do |e| %>
-          <li>
-            <a href="mailto:<%= e.address %>"><%= e.address %></a>
-            <a href="/email/<%= e.id %>" class="delete">delete</a>
-          </li>
-        <% end %>
-      <% end %>
-    </ul>
-  </section>
 </div>

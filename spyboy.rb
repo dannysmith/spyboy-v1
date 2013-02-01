@@ -68,14 +68,6 @@ class Link
   property :created_at,   DateTime
 end
 
-class Email
-  include DataMapper::Resource
-
-  property :id,         Serial
-  property :address,    String,      :required => true
-  property :created_at, DateTime
-end
-
 class Show
   include DataMapper::Resource
 
@@ -157,7 +149,7 @@ class SpyBoy < Sinatra::Base
 
   # Silly home-baked authentication
   # Whitelist of pages that will have the authentication code run.
-  ["/dashboard", "/signout", "/link", "/link/*", "/show", "/show/*", "/email/*", "/email.*", "/toggleheader"].each do |path|
+  ["/dashboard", "/signout", "/link", "/link/*", "/show", "/show/*", "/toggleheader"].each do |path|
     before path do
       unless session[:admin_user]
         flash[:info] = "Your session has timed out. Please log in again."
@@ -192,7 +184,6 @@ class SpyBoy < Sinatra::Base
 
   get "/dashboard" do
     @links = Link.all
-    @emails = Email.all(:order => [ :address.asc ])
     @shows = Show.all(:order => [ :date_and_time.desc ])
     erb :dashboard
   end
@@ -330,63 +321,11 @@ class SpyBoy < Sinatra::Base
 
 
 
-
-
-
-
-  ## Email Addresses -----------------
-
-  post "/email" do
-    puts "Adding #{params[:address]} to database"
-    params[:created_at] = Time.now
-    params.delete("submit")
-    
-    @email = Email.new(params)
-    if @email.save
-      flash[:info] = "Your email's been added to the mailing list."
-      redirect "/"
-    else
-      status 500
-      flash[:error] = "Sorry! An error's occured. Please try signing up again."
-      redirect "/"
-    end
-  end
-
-  delete "/email/:id" do
-    @email = Email.get(params[:id])
-     if @email.destroy
-       status 200
-     else
-       status 404
-       "Email Address could not be found"
-     end
-  end
-
-  get "/email.csv" do
-    content_type 'text/plain', charset: 'utf-8'
-    @emails = ""
-    Email.all.each do |email|
-      @emails += email.address + ", "
-    end
-    return @emails
-  end
-  
-  
   
   
   
   
   # Other Routes --------------------
-  
-  post "/toggleheader" do
-    if (ENV['HEADER_STYLE'] == "alternate")
-      ENV['HEADER_STYLE'] = "normal"
-    else
-      ENV['HEADER_STYLE'] = "alternate"
-    end
-    puts "Header set to: #{ENV['HEADER_STYLE']}"
-    status 200
-  end
   
   get "/:show_slug" do
     if settings.environment != :development
